@@ -1,0 +1,18 @@
+diff --git a/node_modules/metro/src/node-haste/DependencyGraph.js b/node_modules/metro/src/node-haste/DependencyGraph.js
+index 1412024..8e2de90 100644
+--- a/node_modules/metro/src/node-haste/DependencyGraph.js
++++ b/node_modules/metro/src/node-haste/DependencyGraph.js
+@@ -309,6 +309,13 @@ class DependencyGraph extends EventEmitter {
+ 
+     const sha1 = this._hasteFS.getSha1(resolvedPath);
+ 
++    if (!sha1) {
++      return getFileHash(resolvedPath);
++      function getFileHash(file) {
++        return require('crypto').createHash('sha1').update(fs.readFileSync(file)).digest('hex');
++      }
++    }
++
+     if (!sha1) {
+       throw new ReferenceError(
+         `SHA-1 for file ${filename} (${resolvedPath}) is not computed`
